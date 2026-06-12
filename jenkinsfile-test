@@ -1,0 +1,23 @@
+//groovy DSL for 
+pipeline {
+    agent any
+    stages{
+        stage('git chekout'){
+            steps{
+                echo "check out"
+            }
+        }
+        stage('building docker image'){
+            steps{
+                echo "build docker image"
+                sh "docker build -t microdegree:latest ." 
+            }
+        }
+        stage('depoly docker contianers'){
+            steps{
+                echo " depolying docker containers"
+            }
+        }
+    }
+
+}
