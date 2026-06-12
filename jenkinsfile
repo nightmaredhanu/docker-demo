@@ -1,0 +1,17 @@
+#groovy DSL for 
+pipline {
+    agent any
+    stages{
+        stage('git chekout'){
+            steps{
+                echo "check out"
+            }
+        }
+        stage('building docker image'){
+            steps{
+                echo "build docker image" 
+            }
+        }
+    }
+
+}
