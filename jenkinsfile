@@ -1,4 +1,4 @@
-#groovy DSL for 
+//groovy DSL for 
 pipeline {
     agent any
     stages{
