@@ -1,37 +1,45 @@
-//groovy DSL for 
 pipeline {
     agent any
-    stages{
-        stage('git chekout'){
-            steps{
+
+    environment {
+        IMAGE_NAME = "microdegree"
+    }
+
+    stages {
+
+        stage('git checkout') {
+            steps {
                 echo "check out"
             }
         }
-        stage('building docker image'){
-            steps{
+
+        stage('building docker image') {
+            steps {
                 echo "build docker image"
-                sh "docker build -t microdegree:latest ." 
+                sh "docker build -t ${IMAGE_NAME}:latest ."
             }
         }
-        stage('depoly docker contianers'){
-            steps{
-                echo " depolying docker containers"
+
+        stage('deploy docker containers') {
+            steps {
+                echo "deploying docker containers"
             }
         }
-        stage('pushing a docker images to docker hub '){
-            steps{
+
+        stage('pushing docker image to Docker Hub') {
+            steps {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub-creds',
                         usernameVariable: 'DOCKER_USER',
                         passwordVariable: 'DOCKER_PASS'
-                        )
-                ])  {      
-                sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                sh " docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest"
-                sh "docker push $DOCKER_USER/$IMAGE_NAME:latest "
+                    )
+                ]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest'
+                    sh 'docker push $DOCKER_USER/$IMAGE_NAME:latest'
+                }
             }
         }
     }
-
 }
