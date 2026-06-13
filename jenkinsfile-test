@@ -18,6 +18,18 @@ pipeline {
                 echo " depolying docker containers"
             }
         }
+        stage('pushing a docker images to docker hub '){
+            steps{
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                sh " docker tag $IMAGE_NAME:latest $DOCKER_USER/$IMAGE_NAME:latest"
+                sh "docker push $DOCKER_USER/$IMAGE_NAME:latest "
+            }
+        }
     }
 
 }
